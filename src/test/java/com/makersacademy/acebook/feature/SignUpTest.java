@@ -1,7 +1,7 @@
 package com.makersacademy.acebook.feature;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.javafaker.Faker;
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,13 +30,12 @@ public class SignUpTest {
     public void successfulSignUpAlsoLogsInUser() {
         String email = faker.name().username() + "@email.com";
 
-        driver.get("http://localhost:8080/");
+        driver.get("http://localhost:8081/");
         driver.findElement(By.linkText("Sign up")).click();
         driver.findElement(By.name("email")).sendKeys(email);
         driver.findElement(By.name("password")).sendKeys("P@55qw0rd");
         driver.findElement(By.name("action")).click();
-        driver.findElement(By.name("action")).click();
         String greetingText = driver.findElement(By.id("greeting")).getText();
-        Assert.assertEquals("Signed in as " + email, greetingText);
+        assertEquals("Signed in as " + email, greetingText);
     }
 }
