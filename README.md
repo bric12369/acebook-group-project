@@ -14,7 +14,7 @@ Below, you'll find specific learning objectives for each tool.
 
 ## QuickStart Instructions
 
-- Fork and clone this repository to your machine
+- Click "Use this template" to create a copy of this repo on your GitHub account.
 - Open the codebase in an IDE like InteliJ or VSCode
   - If using IntelliJ, accept the prompt to install the Lombok plugin (if you don't get prompted, press command and comma
   to open the Settings and go to Plugins and search for Lombok made by Jetbrains and install).
