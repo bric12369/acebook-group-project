@@ -1,7 +1,8 @@
 package com.makersacademy.acebook.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -12,12 +13,13 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String content;
+    private LocalDateTime createdAt;
 
     public Post() {}
 
     public Post(String content) {
         this.content = content;
     }
-
 }
