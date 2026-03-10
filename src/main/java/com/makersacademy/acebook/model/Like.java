@@ -15,16 +15,13 @@ public class Like {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer likes;
-
     @Column(name = "post_id")
     private Long postId;
 
     @Column(name = "user_id")
     private Long userId;
 
-    public Like(Integer likes, Long post_id, Long user_id) {
-        this.likes = likes;
+    public Like(Long post_id, Long user_id) {
         this.postId = post_id;
         this.userId = user_id;
     }
