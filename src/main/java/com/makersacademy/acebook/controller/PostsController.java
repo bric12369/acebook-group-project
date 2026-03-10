@@ -8,7 +8,7 @@ import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,14 +52,13 @@ public class PostsController {
         return new RedirectView("/posts");
     }
 
-
     @PostMapping("/comments")
-    public RedirectView postComment(@RequestParam Long postId, @RequestParam String content){
-
+    public RedirectView postComment(@RequestParam Long postId, @RequestParam String content, @AuthenticationPrincipal DefaultOidcUser oidcUser){
+        Optional<User> user = userRepository.findUserByUsername(oidcUser.getEmail());
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setPostId(postId);
-        comment.setUserId(1L);
+        comment.setUserId(user.get().getId());
         commentRepository.save(comment);
         return new RedirectView("/posts");
     }
