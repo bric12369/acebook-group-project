@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS likes;
 
 CREATE TABLE likes(
     id bigserial PRIMARY KEY,
