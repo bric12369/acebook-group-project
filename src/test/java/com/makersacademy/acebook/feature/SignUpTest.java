@@ -1,5 +1,4 @@
 package com.makersacademy.acebook.feature;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 import com.github.javafaker.Faker;
