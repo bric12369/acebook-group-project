@@ -15,13 +15,18 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String content;
-    private Long post_id;
-    private Long user_id;
+
+    @Column(name = "post_id")
+    private Long postId;
+
+    @Column(name = "user_id")
+    private Long userId;
 
     public Comment(String content, Long post_id, Long user_id) {
         this.content = content;
-        this.post_id = post_id;
-        this.user_id = user_id;
+        this.postId = post_id;
+        this.userId = user_id;
     }
 }
