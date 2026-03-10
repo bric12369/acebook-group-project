@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Controller
 public class PostsController {
 
@@ -44,6 +46,13 @@ public class PostsController {
         model.addAttribute("posts", postsList);
         model.addAttribute("post", new Post());
         return "posts/index";
+    }
+
+    @GetMapping("/posts/{id}")
+    public String getPostById(Model model, @PathVariable Long id) {
+        Optional<Post> post = repository.findById(id);
+        model.addAttribute("post", post.get());
+        return "posts/post";
     }
 
     @PostMapping("/posts")
