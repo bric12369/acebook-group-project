@@ -12,6 +12,7 @@ import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,8 +58,12 @@ public class PostsController {
     }
 
     @PostMapping("/posts")
-    public RedirectView create(@ModelAttribute Post post) {
+    public RedirectView create(@ModelAttribute Post post, @AuthenticationPrincipal DefaultOidcUser oidcUser) {
         post.setCreatedAt(LocalDateTime.now());
+
+        Optional<User> user = userRepository.findUserByUsername(oidcUser.getEmail());
+
+        post.setUser(user.get());
         repository.save(post);
         return new RedirectView("/posts");
     }
