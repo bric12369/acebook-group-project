@@ -52,7 +52,9 @@ public class PostsController {
     @GetMapping("/posts/{id}")
     public String getPostById(Model model, @PathVariable Long id) {
         Optional<Post> post = repository.findById(id);
+        Iterable<Comment> comments = commentRepository.getCommentsByPostId(id);
         model.addAttribute("post", post.get());
+        model.addAttribute("comments", comments);
         return "posts/post";
     }
 
@@ -69,7 +71,7 @@ public class PostsController {
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setPostId(postId);
-        comment.setUserId(user.get().getId());
+        comment.setUser(user.get());
         commentRepository.save(comment);
         return new RedirectView("/posts");
     }

@@ -7,5 +7,11 @@
 </head>
 <body>
     <h3 th:text="${post.content}"></h3>
+        <ul th:each="comment : ${comments}">
+            <li>
+                <span th:text="${comment.getContent()}"></span><br>
+                <span th:text="'User: ' + ${comment.getUser().getUsername()}"></span>
+            </li>
+        </ul>
 </body>
 </html>
