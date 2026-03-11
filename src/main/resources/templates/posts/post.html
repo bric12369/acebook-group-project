@@ -7,5 +7,8 @@
 </head>
 <body>
     <h3 th:text="${post.content}"></h3>
+    <ul th:each="comment : ${comments}">
+        <li th:text="${comment.getContent()}"></li>
+    </ul>
 </body>
 </html>
