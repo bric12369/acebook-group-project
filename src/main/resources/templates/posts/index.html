@@ -1,23 +1,30 @@
 <!DOCTYPE html>
     <html xmlns:th="http://www.thymeleaf.org"
-          xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
+          xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <head lang="en">
         <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Acebook</title>
         <link rel="stylesheet" href="/main.css" />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
-    <body>
+    <body class="min-h-screen flex flex-col bg-neutral-200">
 
-    <h1>Posts</h1>
+        <!-- Navbar -->
+        <nav class="border-b border-neutral-300 sticky px-5 py-3 bg-neutral-50 text-black flex gap-5 justify-between">
+            <a href="/" class="text-blue-600 text-2xl hover:bg-neutral-200 duration-300 rounded-md px-3 py-2"><h2>Acebook</h2></a>
+            <div class="flex gap-5">
+                <a href="/" class="flex  gap-2 rounded-md px-3 py-2 hover:bg-neutral-200 duration-300 items-center"><i class="fa-regular fa-user"></i><span>Profile</span></a>
+                <a href="/" class="flex rounded-md px-3 py-2 border border-neutral-200 hover:bg-neutral-200 duration-300 items-center">Logout</a>
+            </div>
+        </nav>
 
-    <div sec:authorize="isAuthenticated()" id="greeting">
-        Signed in as <span sec:authentication="principal.attributes['email']"></span>
-    </div>
+        <!-- Main page content -->
+        <main class="bg-neutral-100 h-full flex justify-center pt-10 px-5">
 
-    <form action="#" th:action="@{/posts}" th:object="${post}" method="post">
-        <p>Content: <input type="text" th:field="*{content}" /></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-    </form>
+            <!-- Wrapper div for responsive sizing -->
+            <div class="xl:w-225 lg:w-175 md:w-125 w-full flex flex-col gap-5">
 
     <ul>
         <li th:each="post : ${posts}">
@@ -36,6 +43,54 @@
             </form>
         </li>
     </ul>
+                <!-- Current user -->
+                <div class="bg-neutral-50 rounded-md px-15 py-10 shadow-md flex flex-col md:flex-row items-center gap-5 px-5">
+                    <!-- Profile image -->
+                    <div class="w-25 h-25 bg-red-300 rounded-full">
+                        <img src="https://i.pinimg.com/736x/d2/3e/f6/d23ef673fc4ec07e8e9c565071e2f2af.jpg" alt="Profile image" class="rounded-full"/>
+                    </div>
 
+                    <!-- Details -->
+                    <div class="flex flex-col gap-3">
+                        <h2 class="text-2xl">Current User</h2>
+
+                        <!-- Follower counts -->
+                        <div class="text-neutral-600 text-md flex gap-3">
+                            <div>
+                                <span id="followers" class="text-black font-bold text-lg">X</span> Followers
+                            </div>
+                            <div>
+                                <span id="following" class="text-black font-bold text-lg">Y</span> Following
+                            </div>
+
+                        </div>
+
+                        <a class="border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300 w-fit px-3 py-2">Edit Profile</a>
+                    </div>
+                </div>
+
+                <!-- New post form -->
+                <form action="#" th:action="@{/posts}" th:object="${post}" method="post" class="bg-neutral-50 rounded-md px-5 py-5 shadow-md">
+                    <!-- Content textarea -->
+                    <textarea th:field="*{content}" placeholder="What's on your mind?" class="bg-neutral-200 rounded-md w-full min-h-30 resize-none px-3 py-2"></textarea>
+
+                    <!-- Button controls -->
+                    <div class="flex justify-between mt-2">
+                        <!-- Left side controls -->
+                        <div class="flex gap-3">
+                            <button type="reset" value="Reset" class="cursor-pointer px-3 py-2 bg-red-300 text-neutral-50 rounded-md hover:bg-red-500 duration-300"><i class="fa fa-trash"></i></button>
+                            <button class="cursor-pointer border border-neutral-200 px-3 py-2 bg-neutral-50 rounded-md hover:bg-neutral-200 duration-300"><i class="fa fa-paperclip"></i></button>
+                        </div>
+                        <!-- Post button -->
+                        <button type="submit" value="Post" class="cursor-pointer px-3 py-2 bg-neutral-500 text-neutral-50 rounded-md hover:bg-neutral-400 duration-300">Post</button>
+                    </div>
+                </form>
+
+                <!-- Post feed -->
+                <div th:each="post: ${posts}" >
+                    <div th:insert="fragments/post.html"></div>
+                </div>
+            </div>
+        </main>
     </body>
 </html>

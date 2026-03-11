@@ -1,5 +1,4 @@
 package com.makersacademy.acebook.feature;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 import com.github.javafaker.Faker;
@@ -41,7 +40,6 @@ public class SignUpTest {
         page.locator("[name=email]").fill(email);
         page.locator("[name=password]").fill("P@55qw0rd");
         page.locator("[name=action]").click();
-        page.locator("[name=action]").filter(new Locator.FilterOptions().setHasText("Accept")).click();
         Locator greeting = page.locator("#greeting");
 
         assertThat(greeting).hasText("Signed in as " + email);
