@@ -4,6 +4,7 @@ import com.makersacademy.acebook.model.Comment;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.CommentRepository;
+import com.makersacademy.acebook.repository.LikeRepository;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class PostsController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    LikeRepository likeRepository;
 
     @GetMapping("/posts")
     public String index(Model model) {
@@ -62,4 +66,7 @@ public class PostsController {
         commentRepository.save(comment);
         return new RedirectView("/posts");
     }
+
+    @PostMapping(/"likes")
+    public RedirectView likePost()
 }
