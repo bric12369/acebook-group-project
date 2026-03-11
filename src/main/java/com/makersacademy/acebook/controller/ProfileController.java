@@ -4,7 +4,9 @@ import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,4 +44,25 @@ public class ProfileController {
         return "profile/userprofile";
 
     }
+
+    @GetMapping("/users/{id}/edit")
+    public String editProfile(@PathVariable Long id, Model model){
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+
+        model.addAttribute("user", user);
+        return "profile/editprofile";
+    }
+
+    @PostMapping("/users/{id}/edit")
+    public RedirectView updateProfile(@PathVariable Long id, @RequestParam(required = false) String bio, @RequestParam String username, @AuthenticationPrincipal DefaultOidcUser oidcUser){
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setUsername(username);
+        user.setBio(bio);
+        userRepository.save(user);
+        return new RedirectView("/users/" + id);
+
+    }
+
+
 }

@@ -15,6 +15,8 @@ public class User {
 
     private String username;
 
+    private String bio;
+
     private boolean enabled;
 
     // Optional: link posts to user
@@ -28,8 +30,10 @@ public class User {
         this.enabled = true; // default enabled
     }
 
-    public User(String username, boolean enabled) {
+    public User(String username, boolean enabled, String bio) {
         this.username = username;
         this.enabled = enabled;
+        this.bio = bio;
+
     }
 }

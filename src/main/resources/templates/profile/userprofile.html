@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${user.username} + ' | Acebook'">User Profile</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -15,11 +16,14 @@
             <!-- Username -->
             <h2 class="text-xl font-bold" th:text="${user.username}">Username</h2>
 
+            <p class="text-gray-600 mt-2" th:if="${user.bio}" th:text="${user.bio}"></p>
             <!-- Edit / View Button -->
             <div class="mt-2">
-                <button th:if="${isCurrentUser}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+                <a th:if="${isCurrentUser}"
+                   th:href="@{/users/{id}/edit(id=${user.id})}"
+                   class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
                     Edit Profile
-                </button>
+                </a>
             </div>
         </div>
     </div>
