@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.username} + ' | Acebook'">User Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+<main class="max-w-[600px] mx-auto px-4 py-8">
+
+    <!-- Profile Header -->
+    <div class="profile-header bg-white rounded shadow p-4 flex items-center space-x-4">
+        <div>
+            <!-- Username -->
+            <h2 class="text-xl font-bold" th:text="${user.username}">Username</h2>
+
+            <!-- Edit / View Button -->
+            <div class="mt-2">
+                <button th:if="${isCurrentUser}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+                    Edit Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Posts Section -->
+    <div class="posts mt-6">
+        <div th:each="post : ${posts}" class="post-card bg-white rounded shadow p-4 mb-4">
+            <p th:text="${post.content}">Post content</p>
+        </div>
+
+        <!-- If no posts -->
+        <div th:if="${#lists.isEmpty(posts)}" class="text-center text-gray-500 py-12">
+            No posts yet
+        </div>
+    </div>
+
+</main>
+</body>
+</html>
