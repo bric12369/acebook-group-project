@@ -39,7 +39,7 @@ public class ProfileController {
         model.addAttribute("posts", posts);
         model.addAttribute("isCurrentUser", isCurrentUser);
 
-        return "profile/userprofile";
+        return "profile/profile";
 
     }
 }

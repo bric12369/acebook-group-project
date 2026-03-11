@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
 
-    <body class="min-h-screen flex flex-col bg-neutral-200">
+    <body class="min-h-screen flex flex-col bg-neutral-100">
 
         <!-- Navbar -->
         <th:block th:insert="fragments/navbar.html"></th:block>
@@ -66,7 +66,7 @@
 
                 <!-- Post feed -->
                 <div th:each="post: ${posts}" >
-                    <div th:insert="fragments/post.html"></div>
+                    <th:block th:insert="fragments/post.html"></th:block>
                 </div>
             </div>
         </main>
