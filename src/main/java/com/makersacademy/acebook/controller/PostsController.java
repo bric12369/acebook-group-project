@@ -71,7 +71,7 @@ public class PostsController {
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setPostId(postId);
-        comment.setUserId(user.get().getId());
+        comment.setUser(user.get());
         commentRepository.save(comment);
         return new RedirectView("/posts");
     }
