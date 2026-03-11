@@ -91,6 +91,24 @@
                     <div th:insert="fragments/post.html"></div>
                 </div>
             </div>
+            <!-- Like + Comment Controls -->
+            <div class="flex items-center gap-5">
+
+                <!-- Like button -->
+                <form th:action="@{/posts/{id}/like(id=${post.id})}" method="post">
+                    <button type="submit"
+                            class="flex items-center gap-2 text-red-500 hover:text-red-400 cursor-pointer">
+                        <i class="fa-regular fa-heart"></i>
+                        Like
+                    </button>
+                </form>
+
+                <!-- Like count -->
+                <span class="text-neutral-600 text-sm">
+            <span th:text="${likeCounts[post.id]}">0</span> likes
+        </span>
+
+            </div>
         </main>
     </body>
 </html>
