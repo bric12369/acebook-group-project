@@ -66,7 +66,4 @@ public class PostsController {
         commentRepository.save(comment);
         return new RedirectView("/posts");
     }
-
-    @PostMapping(/"likes")
-    public RedirectView likePost()
 }
