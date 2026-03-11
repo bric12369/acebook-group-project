@@ -10,8 +10,13 @@
 
     <h1>Posts</h1>
 
-    <div sec:authorize="isAuthenticated()" id="greeting">
-        Signed in as <span sec:authentication="principal.attributes['email']"></span>
+    <div sec:authorize="isAuthenticated()" class="mb-6 flex items-center space-x-4">
+        <span>Signed in as <span sec:authentication="principal.attributes['email']"></span></span>
+
+        <a th:href="@{/users/{id}(id=${currentUserId})}"
+           class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+            My Profile
+        </a>
     </div>
 
     <form action="#" th:action="@{/posts}" th:object="${post}" method="post">
@@ -22,6 +27,10 @@
     <ul>
         <li th:each="post : ${posts}">
             <a th:href="'/posts/' + ${post.getId()}"><span th:text="${post.content}"></span></a>
+            <a th:href="@{/users/{id}(id=${post.user.id})}"
+               class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                View Profile
+            </a>
 
             <form th:action="@{/comments}" method="post">
                 <input type="hidden" name="postId" th:value="${post.id}" />

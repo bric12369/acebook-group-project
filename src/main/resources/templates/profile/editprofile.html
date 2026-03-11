@@ -14,15 +14,16 @@
 
     <h1 class="text-2xl font-bold mb-6">Edit Profile</h1>
 
-    <form th:action="@{/users/{id}/edit(id=${user.id})}" th:object="${user}" method="post" class="space-y-4">
+    <form th:action="@{/users/{id}/edit(id=${user.id})}" method="post" class="space-y-4">
 
       <!-- Username -->
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">
-          Username
+          Display Name
         </label>
         <input type="text"
-               th:field="*{username}"
+               name="displayName"
+               th:value="${user.displayName}"
                class="w-full border rounded px-3 py-2">
       </div>
 
@@ -33,7 +34,7 @@
         </label>
         <textarea name="bio"
                   rows="4"
-                  th:field = "*{bio}"
+                  th:text = "${user.bio}"
                   class="w-full border rounded px-3 py-2"></textarea>
       </div>
 

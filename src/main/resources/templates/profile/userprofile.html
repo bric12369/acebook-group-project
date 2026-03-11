@@ -14,7 +14,7 @@
     <div class="profile-header bg-white rounded shadow p-4 flex items-center space-x-4">
         <div>
             <!-- Username -->
-            <h2 class="text-xl font-bold" th:text="${user.username}">Username</h2>
+            <h2 class="text-xl font-bold" th:text="${user.displayName}">Username</h2>
 
             <p class="text-gray-600 mt-2" th:if="${user.bio}" th:text="${user.bio}"></p>
             <!-- Edit / View Button -->

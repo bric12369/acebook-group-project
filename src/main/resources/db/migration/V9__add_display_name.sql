@@ -1,0 +1,3 @@
+ALTER TABLE users ADD COLUMN display_name VARCHAR(255);
+
+UPDATE users SET display_name = username;

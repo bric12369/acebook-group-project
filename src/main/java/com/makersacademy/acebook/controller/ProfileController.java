@@ -25,43 +25,54 @@ public class ProfileController {
     PostRepository postRepository;
 
     @GetMapping("/users/{id}")
-    public String showProfile(@PathVariable Long id, Model model) {
-
+    public String showProfile(@PathVariable Long id, Model model, @AuthenticationPrincipal DefaultOidcUser oidcUser) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         List<Post> posts = postRepository.findByUser_Id(id);
 
-        // Determine if current user is viewing own profile
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        boolean isCurrentUser = currentUsername.equals(user.getUsername());
+        // Get logged-in user from DB
+        User currentUser = userRepository.findUserByUsername(oidcUser.getEmail())
+                .orElseThrow(() -> new RuntimeException("Logged-in user not found"));
 
+        boolean isCurrentUser = currentUser.getId().equals(user.getId());
 
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("isCurrentUser", isCurrentUser);
 
         return "profile/userprofile";
-
     }
 
     @GetMapping("/users/{id}/edit")
-    public String editProfile(@PathVariable Long id, Model model){
+    public String editProfile(@PathVariable Long id, Model model, @AuthenticationPrincipal DefaultOidcUser oidcUser){
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        User currentUser = userRepository.findUserByUsername(oidcUser.getEmail())
+                .orElseThrow(() -> new RuntimeException("Logged-in user not found"));
+
+        if (!currentUser.getId().equals(user.getId())) {
+            return "redirect:/users/" + id; // prevent editing others
+        }
 
         model.addAttribute("user", user);
         return "profile/editprofile";
     }
 
     @PostMapping("/users/{id}/edit")
-    public RedirectView updateProfile(@PathVariable Long id, @RequestParam(required = false) String bio, @RequestParam String username, @AuthenticationPrincipal DefaultOidcUser oidcUser){
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public RedirectView updateProfile(
+            @PathVariable Long id,
+            @RequestParam(required = false) String bio,
+            @RequestParam(required = false) String displayName) {
 
-        user.setUsername(username);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setDisplayName(displayName);
         user.setBio(bio);
-        userRepository.save(user);
-        return new RedirectView("/users/" + id);
 
+        userRepository.save(user);
+
+        return new RedirectView("/users/" + id);
     }
 
 
