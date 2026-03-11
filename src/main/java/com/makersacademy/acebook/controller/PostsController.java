@@ -1,5 +1,8 @@
 package com.makersacademy.acebook.controller;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.makersacademy.acebook.model.Comment;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
@@ -35,15 +38,9 @@ public class PostsController {
 
     @GetMapping("/posts")
     public String index(Model model) {
-        // Iterable containing all posts
-        Iterable<Post> posts = repository.findAll();
-        // Convert Iterable to List
-        List<Post> postsList = new ArrayList<>();
-        posts.forEach(postsList::add);
-        // Reverse the list to display newest posts first
-        Collections.reverse(postsList);
+        List<Post> posts = repository.findByOrderByCreatedAtDesc();
 
-        model.addAttribute("posts", postsList);
+        model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
         return "posts/index";
     }
@@ -57,6 +54,7 @@ public class PostsController {
 
     @PostMapping("/posts")
     public RedirectView create(@ModelAttribute Post post) {
+        post.setCreatedAt(LocalDateTime.now());
         repository.save(post);
         return new RedirectView("/posts");
     }

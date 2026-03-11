@@ -1,5 +1,6 @@
 package com.makersacademy.acebook.model;
 
+import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ public class Post {
     private Long id;
 
     private String content;
+    private LocalDateTime createdAt;
 
     //private LocalDateTime timestamp = LocalDateTime.now();
 
