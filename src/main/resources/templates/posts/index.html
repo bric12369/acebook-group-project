@@ -26,6 +26,8 @@
             <form th:action="@{/comments}" method="post">
                 <input type="hidden" name="postId" th:value="${post.id}" />
 
+                <input type="submit" value="Like" />
+
                 <p>
                     Comment:
                     <input type="text" name="content" />
