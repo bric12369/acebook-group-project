@@ -9,9 +9,18 @@
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
+    <body>
 
     <body class="min-h-screen flex flex-col bg-neutral-100">
 
+    <div sec:authorize="isAuthenticated()" class="mb-6 flex items-center space-x-4">
+        <span>Signed in as <span sec:authentication="principal.attributes['email']"></span></span>
+
+        <a th:href="@{/users/{id}(id=${currentUserId})}"
+           class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+            My Profile
+        </a>
+    </div>
         <!-- Navbar -->
         <th:block th:insert="fragments/navbar.html"></th:block>
 
@@ -23,7 +32,11 @@
 
     <ul>
         <li th:each="post : ${posts}">
-            <span th:text="${post.content}"></span>
+            <a th:href="'/posts/' + ${post.getId()}"><span th:text="${post.content}"></span></a>
+            <a th:href="@{/users/{id}(id=${post.user.id})}"
+               class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                View Profile
+            </a>
 
             <form th:action="@{/comments}" method="post">
                 <input type="hidden" name="postId" th:value="${post.id}" />
