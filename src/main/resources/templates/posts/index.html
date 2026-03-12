@@ -20,24 +20,7 @@
 
             <!-- Wrapper div for responsive sizing -->
             <div class="xl:w-225 lg:w-175 md:w-125 w-full flex flex-col gap-5">
-
-    <ul>
-        <li th:each="post : ${posts}">
-            <span th:text="${post.content}"></span>
-
-            <form th:action="@{/comments}" method="post">
-                <input type="hidden" name="postId" th:value="${post.id}" />
-
-                <input type="submit" value="Like" />
-
-                <p>
-                    Comment:
-                    <input type="text" name="content" />
-                    <input type="submit" value="Add Comment"/>
-                </p>
-            </form>
-        </li>
-    </ul>
+                
                 <!-- Current user -->
                 <div class="bg-neutral-50 rounded-md px-15 py-10 shadow-md flex flex-col md:flex-row items-center gap-5 px-5">
                     <!-- Profile image -->
