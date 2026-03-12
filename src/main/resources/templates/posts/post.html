@@ -25,9 +25,7 @@
     <div class="xl:w-225 lg:w-175 md:w-125 w-full flex flex-col gap-5">
 
         <!-- Post -->
-        <div class="bg-white p-5 rounded shadow">
-            <h3 class="text-lg font-semibold" th:text="${post.content}"></h3>
-        </div>
+        <th:block th:insert="fragments/post.html"></th:block>
 
         <!-- Comments -->
         <div class="bg-white p-5 rounded shadow">
