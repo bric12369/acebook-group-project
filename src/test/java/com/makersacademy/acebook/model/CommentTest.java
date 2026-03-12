@@ -2,13 +2,15 @@ package com.makersacademy.acebook.model;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CommentTest {
 
     private User user = new User("Username");
-    private Comment comment = new Comment("This is a comment", 1L, user);
+    private Comment comment = new Comment("This is a comment", 1L, user, LocalDateTime.now());
 
     @Test
     public void commentHasContent() {

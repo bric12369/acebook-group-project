@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface CommentRepository extends CrudRepository<Comment, Long> {
 
-    Iterable<Comment> getCommentsByPostId(Long postId);
+    Iterable<Comment> findByPostIdOrderByCreatedAtDesc(Long postId);
 
     Iterable<Comment> getCommentsByUserId(Long userId);
 }
