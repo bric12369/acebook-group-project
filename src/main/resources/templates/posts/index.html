@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
           xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <head lang="en">
         <meta charset="UTF-8"/>
@@ -9,16 +9,11 @@
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
-    <body class="min-h-screen flex flex-col bg-neutral-200">
+
+    <body class="min-h-screen flex flex-col bg-neutral-100">
 
         <!-- Navbar -->
-        <nav class="border-b border-neutral-300 sticky px-5 py-3 bg-neutral-50 text-black flex gap-5 justify-between">
-            <a href="/" class="text-blue-600 text-2xl hover:bg-neutral-200 duration-300 rounded-md px-3 py-2"><h2>Acebook</h2></a>
-            <div class="flex gap-5">
-                <a href="/" class="flex  gap-2 rounded-md px-3 py-2 hover:bg-neutral-200 duration-300 items-center"><i class="fa-regular fa-user"></i><span>Profile</span></a>
-                <a href="/" class="flex rounded-md px-3 py-2 border border-neutral-200 hover:bg-neutral-200 duration-300 items-center">Logout</a>
-            </div>
-        </nav>
+        <th:block th:insert="fragments/navbar.html"></th:block>
 
         <!-- Main page content -->
         <main class="bg-neutral-100 h-full flex justify-center pt-10 px-5">
@@ -88,7 +83,7 @@
 
                 <!-- Post feed -->
                 <div th:each="post: ${posts}" >
-                    <div th:insert="fragments/post.html"></div>
+                    <th:block th:insert="fragments/post.html"></th:block>
                 </div>
             </div>
         </main>
