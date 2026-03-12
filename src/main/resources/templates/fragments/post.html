@@ -15,9 +15,18 @@
   <div class="text-pretty" th:text="${post.content}"></div>
 
 
+
   <!-- Post interactions -->
   <div>
-    <a href="/" class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300"><i class="fa-regular fa-thumbs-up"></i> Like (<span>17</span>)</a>
+    <label class="appearance-none relative px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300 cursor-pointer duration-300">
+      <input type="checkbox" th:onclick="|likePost(${post.id})|" class="sr-only peer">
+      <i class="z--1 fa-regular fa-heart"></i>
+      <span class="absolute px-3 z-0 left-0 opacity-0 peer-checked:opacity-100 duration-200">
+        <i class="z-0 fa-solid fa-heart text-red-400"></i>
+      </span>
+      <span class="relative z-2"> Like (<span>17</span>)</span>
+    </label>
+
     <a href="/" class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300"><i class="fa-regular fa-comment"></i> Comments (<span>3</span>)</a>
     <a href="/" class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300"><i class="fa fa-trash"></i> Delete</a>
   </div>
