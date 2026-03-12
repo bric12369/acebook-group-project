@@ -1,8 +1,27 @@
--- Create some test users
-INSERT INTO users (username, enabled) VALUES ('alice', true);
-INSERT INTO users (username, enabled) VALUES ('bob', true);
+-- Insert users only if they don't already exist
+INSERT INTO users (username, enabled)
+SELECT 'alice', true
+    WHERE NOT EXISTS (SELECT 1 FROM users WHERE username='alice');
 
--- Create some test posts for those users
-INSERT INTO posts (content, user_id) VALUES ('Hello world!', 1);
-INSERT INTO posts (content, user_id) VALUES ('Another post from Alice', 1);
-INSERT INTO posts (content, user_id) VALUES ('Bob''s first post', 2);
+INSERT INTO users (username, enabled)
+SELECT 'bob', true
+    WHERE NOT EXISTS (SELECT 1 FROM users WHERE username='bob');
+
+-- Insert posts dynamically using the actual user IDs
+INSERT INTO posts (content, user_id)
+SELECT 'Hello world!', id FROM users WHERE username='alice'
+                                       AND NOT EXISTS (
+        SELECT 1 FROM posts WHERE content='Hello world!'
+    );
+
+INSERT INTO posts (content, user_id)
+SELECT 'Another post from Alice', id FROM users WHERE username='alice'
+                                                  AND NOT EXISTS (
+        SELECT 1 FROM posts WHERE content='Another post from Alice'
+    );
+
+INSERT INTO posts (content, user_id)
+SELECT 'Bob''s first post', id FROM users WHERE username='bob'
+                                            AND NOT EXISTS (
+        SELECT 1 FROM posts WHERE content='Bob''s first post'
+    );

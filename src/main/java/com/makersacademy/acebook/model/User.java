@@ -14,6 +14,9 @@ public class User {
     private Long id;
 
     private String username;
+    private String displayName;
+
+    private String bio;
 
     private boolean enabled;
 
@@ -26,10 +29,15 @@ public class User {
     public User(String username) {
         this.username = username;
         this.enabled = true; // default enabled
+        this.displayName = username;
+        this.bio = bio;
     }
 
-    public User(String username, boolean enabled) {
+    public User(String username, boolean enabled, String bio, String displayName) {
         this.username = username;
         this.enabled = enabled;
+        this.displayName = username;
+        this.bio = bio;
+
     }
 }

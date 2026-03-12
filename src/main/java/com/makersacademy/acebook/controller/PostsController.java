@@ -40,12 +40,18 @@ public class PostsController {
     LikeRepository likeRepository;
 
     @GetMapping("/posts")
-    public String index(Model model) {
-
+    public String index(Model model, @AuthenticationPrincipal DefaultOidcUser oidcUser) {
         List<Post> posts = repository.findByOrderByCreatedAtDesc();
 
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
+
+        if(oidcUser != null) {
+            String email = oidcUser.getEmail();
+            Optional<User> currentUser = userRepository.findUserByUsername(email);
+            currentUser.ifPresent(user -> model.addAttribute("currentUserId", user.getId()));
+        }
+
 
         Map<Long, Long> likeCounts = new HashMap<>();
 

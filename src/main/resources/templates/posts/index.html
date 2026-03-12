@@ -10,9 +10,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="/like_post.js"></script>
     </head>
+    <body>
 
     <body class="min-h-screen flex flex-col bg-neutral-100">
-
+    
         <!-- Navbar -->
         <th:block th:insert="fragments/navbar.html"></th:block>
 
@@ -24,7 +25,11 @@
 
     <ul>
         <li th:each="post : ${posts}">
-            <span th:text="${post.content}"></span>
+            <a th:href="'/posts/' + ${post.getId()}"><span th:text="${post.content}"></span></a>
+            <a th:href="@{/users/{id}(id=${post.user.id})}"
+               class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                View Profile
+            </a>
 
             <form th:action="@{/comments}" method="post">
                 <input type="hidden" name="postId" th:value="${post.id}" />

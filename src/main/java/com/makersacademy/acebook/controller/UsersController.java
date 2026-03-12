@@ -15,15 +15,22 @@ public class UsersController {
 
     @GetMapping("/users/after-login")
     public RedirectView afterLogin() {
+
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
 
         String username = (String) principal.getAttributes().get("email");
+
         userRepository
                 .findUserByUsername(username)
-                .orElseGet(() -> userRepository.save(new User(username)));
+                .orElseGet(() -> {
+                    User newUser = new User(username);
+                    newUser.setDisplayName(username);
+                    newUser.setEnabled(true);
+                    return userRepository.save(newUser);
+                });
 
         return new RedirectView("/posts");
     }
