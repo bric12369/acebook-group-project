@@ -50,6 +50,8 @@ public class PostsController {
             String email = oidcUser.getEmail();
             Optional<User> currentUser = userRepository.findUserByUsername(email);
             currentUser.ifPresent(user -> model.addAttribute("currentUserId", user.getId()));
+            model.addAttribute("user", currentUser.get());
+            model.addAttribute("isCurrentUser", true);
         }
 
 
