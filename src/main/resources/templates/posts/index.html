@@ -100,7 +100,7 @@
 
                 <!-- Like count -->
                 <span class="text-neutral-600 text-sm">
-            <span th:text="${likeCounts[post.id]}">0</span> likes
+            <span th:text="${likeCounts.get(post.id)}">0</span> likes
         </span>
 
             </div>
