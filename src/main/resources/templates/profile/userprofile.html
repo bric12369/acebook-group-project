@@ -17,6 +17,36 @@
             <h2 class="text-xl font-bold" th:text="${user.displayName}">DisplayName</h2>
 
             <p class="text-gray-600 mt-2" th:if="${user.bio}" th:text="${user.bio}"></p>
+
+            <div class="text-neutral-600 text-md flex gap-3">
+                <div>
+        <span class="text-black font-bold text-lg"
+              th:text="${followersCount}">0</span> Followers
+                </div>
+                <div>
+        <span class="text-black font-bold text-lg"
+              th:text="${followingCount}">0</span> Following
+                </div>
+            </div>
+            <div th:if="${!isCurrentUser}">
+
+                <form th:if="${!isFollowing}"
+                      th:action="@{/users/{id}/follow(id=${user.id})}"
+                      method="post">
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded">
+                        Follow
+                    </button>
+                </form>
+
+                <form th:if="${isFollowing}"
+                      th:action="@{/users/{id}/unfollow(id=${user.id})}"
+                      method="post">
+                    <button class="bg-gray-400 text-white px-4 py-2 rounded">
+                        Unfollow
+                    </button>
+                </form>
+
+            </div>
             <!-- Edit / View Button -->
             <div class="mt-2">
                 <a th:if="${isCurrentUser}"
