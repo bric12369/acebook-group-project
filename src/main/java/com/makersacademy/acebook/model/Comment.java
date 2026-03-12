@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Table(name="COMMENTS")
@@ -25,9 +27,12 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Comment(String content, Long post_id, User user) {
+    private LocalDateTime createdAt;
+
+    public Comment(String content, Long post_id, User user, LocalDateTime createdAt) {
         this.content = content;
         this.postId = post_id;
         this.user = user;
+        this.createdAt = createdAt;
     }
 }
