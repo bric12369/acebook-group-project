@@ -21,12 +21,13 @@ public class Comment {
     @Column(name = "post_id")
     private Long postId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public Comment(String content, Long post_id, Long user_id) {
+    public Comment(String content, Long post_id, User user) {
         this.content = content;
         this.postId = post_id;
-        this.userId = user_id;
+        this.user = user;
     }
 }

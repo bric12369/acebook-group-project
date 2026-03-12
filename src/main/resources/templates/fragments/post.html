@@ -1,0 +1,24 @@
+<div class="bg-neutral-50 rounded-md px-5 py-5 shadow-md flex flex-col gap-3 overflow-hidden">
+  <!-- Post details -->
+  <div class="flex justify-between">
+    <!-- Author details -->
+    <div class="flex items-center gap-3">
+      <img src="https://i.pinimg.com/736x/d2/3e/f6/d23ef673fc4ec07e8e9c565071e2f2af.jpg" class="w-10 h-10 rounded-full"/>
+      <a th:href="@{'/users/' + ${post.id}}" class="font-bold text-lg">Eren Yeager</a>
+    </div>
+
+    <!-- Timestamp -->
+    <div class="text-neutral-600 text-lg">2000 Years Ago</div>
+  </div>
+
+  <!-- Post content -->
+  <div class="text-pretty" th:text="${post.content}"></div>
+
+
+  <!-- Post interactions -->
+  <div>
+    <a href="/" class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300"><i class="fa-regular fa-thumbs-up"></i> Like (<span>17</span>)</a>
+    <a href="/" class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300"><i class="fa-regular fa-comment"></i> Comments (<span>3</span>)</a>
+    <a href="/" class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300"><i class="fa fa-trash"></i> Delete</a>
+  </div>
+</div>
