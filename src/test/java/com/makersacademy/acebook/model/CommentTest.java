@@ -7,7 +7,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CommentTest {
 
-    private Comment comment = new Comment("This is a comment", 1L,1L);
+    private User user = new User("Username");
+    private Comment comment = new Comment("This is a comment", 1L, user);
 
     @Test
     public void commentHasContent() {
