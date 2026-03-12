@@ -1,6 +1,8 @@
 package com.makersacademy.acebook.controller;
+import com.makersacademy.acebook.model.Follow;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
+import com.makersacademy.acebook.repository.FollowRepository;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class ProfileController {
     @Autowired
     PostRepository postRepository;
 
+    @Autowired
+    FollowRepository followRepository;
+
     @GetMapping("/users/{id}")
     public String showProfile(@PathVariable Long id, Model model, @AuthenticationPrincipal DefaultOidcUser oidcUser) {
         User user = userRepository.findById(id)
@@ -37,9 +42,19 @@ public class ProfileController {
 
         boolean isCurrentUser = currentUser.getId().equals(user.getId());
 
+        long followersCount = followRepository.countByFollowing(user);
+        long followingCount = followRepository.countByFollower(user);
+
+        boolean isFollowing = followRepository
+                .findByFollowerAndFollowing(currentUser, user)
+                .isPresent();
+
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("isCurrentUser", isCurrentUser);
+        model.addAttribute("followersCount", followersCount);
+        model.addAttribute("followingCount", followingCount);
+        model.addAttribute("isFollowing", isFollowing);
 
         return "profile/userprofile";
     }
@@ -75,5 +90,43 @@ public class ProfileController {
         return new RedirectView("/users/" + id);
     }
 
+    @PostMapping("users/{id}/follow")
+    public RedirectView followeruser(@PathVariable Long id, @AuthenticationPrincipal DefaultOidcUser oidcUser)
+    {
+        User toFollow = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        User currentUser = userRepository.findUserByUsername(oidcUser.getEmail())
+                .orElseThrow(() -> new RuntimeException("Logged-in user not found"));
+
+        if (!currentUser.getId().equals(toFollow.getId())) {
+
+            followRepository.findByFollowerAndFollowing(currentUser, toFollow)
+                    .orElseGet(() -> {
+                        Follow follow = new Follow();
+                        follow.setFollower(currentUser);
+                        follow.setFollowing(toFollow);
+                        return followRepository.save(follow);
+                    });
+        }
+
+        return new RedirectView("/users/" + id);
+
+    }
+    @PostMapping("/users/{id}/unfollow")
+    public RedirectView unfollowUser(@PathVariable Long id,
+                                     @AuthenticationPrincipal DefaultOidcUser oidcUser) {
+
+        User toUnfollow = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        User currentUser = userRepository.findUserByUsername(oidcUser.getEmail())
+                .orElseThrow(() -> new RuntimeException("Logged-in user not found"));
+
+        followRepository.findByFollowerAndFollowing(currentUser, toUnfollow)
+                .ifPresent(followRepository::delete);
+
+        return new RedirectView("/users/" + id);
+    }
 
 }
