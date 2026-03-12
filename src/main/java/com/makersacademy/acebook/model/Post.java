@@ -15,6 +15,7 @@ public class Post {
     private Long id;
 
     private String content;
+    private String image;
     private LocalDateTime createdAt;
 
     //private LocalDateTime timestamp = LocalDateTime.now();
@@ -25,8 +26,9 @@ public class Post {
 
     public Post() {}
 
-    public Post(String content, User user) {
+    public Post(String content, String image, User user) {
         this.content = content;
+        this.image = image;
         this.user = user;
         //this.timestamp = LocalDateTime.now();
     }
