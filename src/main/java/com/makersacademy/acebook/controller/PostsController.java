@@ -1,11 +1,12 @@
 package com.makersacademy.acebook.controller;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 import com.makersacademy.acebook.model.Comment;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
+import com.makersacademy.acebook.model.Like;
 import com.makersacademy.acebook.repository.CommentRepository;
 import com.makersacademy.acebook.repository.LikeRepository;
 import com.makersacademy.acebook.repository.PostRepository;
@@ -19,10 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
@@ -43,10 +41,20 @@ public class PostsController {
 
     @GetMapping("/posts")
     public String index(Model model) {
+
         List<Post> posts = repository.findByOrderByCreatedAtDesc();
 
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
+
+        Map<Long, Long> likeCounts = new HashMap<>();
+
+        for (Post post : posts) {
+            likeCounts.put(post.getId(), likeRepository.countByPostId(post.getId()));
+        }
+
+        model.addAttribute("likeCounts", likeCounts);
+
         return "posts/index";
     }
 
@@ -78,6 +86,25 @@ public class PostsController {
         comment.setPostId(postId);
         comment.setUser(user.get());
         commentRepository.save(comment);
+        return new RedirectView("/posts");
+    }
+
+    @PostMapping("/posts/{postId}/like")
+    public RedirectView toggleLike(@PathVariable Long postId,
+                                   @AuthenticationPrincipal DefaultOidcUser oidcUser) {
+
+        Optional<User> user = userRepository.findUserByUsername(oidcUser.getEmail());
+        Long userId = user.get().getId();
+
+        boolean alreadyLiked = likeRepository.existsByPostIdAndUserId(postId, userId);
+
+        if (alreadyLiked) {
+            likeRepository.deleteByPostIdAndUserId(postId, userId);
+        } else {
+            Like like = new Like(postId, userId);
+            likeRepository.save(like);
+        }
+
         return new RedirectView("/posts");
     }
 }
