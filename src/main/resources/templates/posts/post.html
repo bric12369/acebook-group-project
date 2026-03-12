@@ -1,26 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
-    <head lang="en">
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Post</title>
-        <link rel="stylesheet" href="/main.css" />
-        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    </head>
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-    <body class="min-h-screen bg-neutral-100">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Post</title>
 
-        <!-- Navbar -->
-        <th:block th:insert="fragments/navbar.html"></th:block>
+    <link rel="stylesheet" href="/main.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-        <!-- Main page content -->
-        <main class="bg-neutral-100 h-full flex justify-center pt-10 px-5">
-            <!-- Wrapper div for responsive sizing -->
-            <div class="xl:w-225 lg:w-175 md:w-125 w-full flex flex-col gap-5">
-                <div th:insert="fragments/post.html"></div>
-            </div>
-        </main>
-    </body>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
+</head>
+
+<body class="min-h-screen bg-neutral-100">
+
+<!-- Navbar -->
+<th:block th:insert="fragments/navbar.html"></th:block>
+
+<!-- Main content -->
+<main class="bg-neutral-100 h-full flex justify-center pt-10 px-5">
+
+    <div class="xl:w-225 lg:w-175 md:w-125 w-full flex flex-col gap-5">
+
+        <!-- Post -->
+        <div class="bg-white p-5 rounded shadow">
+            <h3 class="text-lg font-semibold" th:text="${post.content}"></h3>
+        </div>
+
+        <!-- Comments -->
+        <div class="bg-white p-5 rounded shadow">
+            <h4 class="font-semibold mb-3">Comments</h4>
+
+            <ul th:each="comment : ${comments}">
+                <li class="border-b py-2">
+                    <span th:text="${comment.content}"></span><br>
+                    <span class="text-sm text-gray-500"
+                          th:text="'User: ' + ${comment.user.username}"></span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+</main>
+
+</body>
 </html>

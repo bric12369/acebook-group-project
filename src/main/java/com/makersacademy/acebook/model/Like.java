@@ -8,26 +8,21 @@ import lombok.Setter;
 
 @Data
 @Entity
-@Table(name="COMMENTS")
+@Table(name="LIKES")
 @Getter @Setter @NoArgsConstructor
-public class Comment {
-
+public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String content;
-
     @Column(name = "post_id")
     private Long postId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
 
-    public Comment(String content, Long post_id, User user) {
-        this.content = content;
+    public Like(Long post_id, Long user_id) {
         this.postId = post_id;
-        this.user = user;
+        this.userId = user_id;
     }
 }
