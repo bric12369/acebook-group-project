@@ -12,14 +12,12 @@ import com.makersacademy.acebook.repository.LikeRepository;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
@@ -52,8 +50,6 @@ public class PostsController {
             String email = oidcUser.getEmail();
             Optional<User> currentUser = userRepository.findUserByUsername(email);
             currentUser.ifPresent(user -> model.addAttribute("currentUserId", user.getId()));
-            Set<Long> likedPosts = likeRepository.findPostIdsByUserId(currentUser.get().getId());
-            model.addAttribute("likedPosts", likedPosts);
             model.addAttribute("user", currentUser.get());
             model.addAttribute("isCurrentUser", true);
 
@@ -75,10 +71,9 @@ public class PostsController {
     }
 
     @GetMapping("/posts/{id}")
-    public String getPostById(Model model, @PathVariable Long id, @AuthenticationPrincipal DefaultOidcUser oidcUser) {
+    public String getPostById(Model model, @PathVariable Long id) {
         Optional<Post> post = repository.findById(id);
         Iterable<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtDesc(id);
-
 
         Map<Long, Long> likeCounts = new HashMap<>();
         Map<Long, Long>  commentCounts = new HashMap<>();
@@ -92,6 +87,7 @@ public class PostsController {
 
         model.addAttribute("likeCounts", likeCounts);
         model.addAttribute("commentCounts", commentCounts);
+
         model.addAttribute("post", post.get());
         model.addAttribute("comments", comments);
         return "posts/post";
@@ -109,12 +105,8 @@ public class PostsController {
     }
 
     @DeleteMapping("/posts/{id}")
-    public RedirectView deletePost(@PathVariable Long id, @RequestParam String redirect, @AuthenticationPrincipal DefaultOidcUser oidcUser) {
-        Optional<User> user = userRepository.findUserByUsername(oidcUser.getEmail());
-        Optional<Post> post = repository.findById(id);
-        if (Objects.equals(user.get().getId(), post.get().getUser().getId())) {
-            repository.deleteById(id);
-        }
+    public RedirectView deletePost(@PathVariable Long id, @RequestParam String redirect) {
+        repository.deleteById(id);
         return new RedirectView(redirect);
     }
 

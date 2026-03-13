@@ -2,7 +2,6 @@ package com.makersacademy.acebook.controller;
 import com.makersacademy.acebook.model.Follow;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
-
 import com.makersacademy.acebook.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -52,17 +51,16 @@ public class ProfileController {
                 .findByFollowerAndFollowing(currentUser, user)
                 .isPresent();
 
-
-        Set<Long> likedPosts = likeRepository.findPostIdsByUserId(currentUser.getId());
-
         Map<Long, Long> likeCounts = new HashMap<>();
+        Map<Long, Long>  commentCounts = new HashMap<>();
 
         for (Post post : posts) {
             likeCounts.put(post.getId(), likeRepository.countByPostId(post.getId()));
+            commentCounts.put(post.getId(), commentRepository.countByPostId(post.getId()));
         }
 
         model.addAttribute("likeCounts", likeCounts);
-        model.addAttribute("likedPosts", likedPosts);
+        model.addAttribute("commentCounts", commentCounts);
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("isCurrentUser", isCurrentUser);
