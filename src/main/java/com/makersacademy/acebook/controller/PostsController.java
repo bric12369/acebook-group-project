@@ -87,6 +87,12 @@ public class PostsController {
         return new RedirectView("/posts");
     }
 
+    @DeleteMapping("/posts/{id}")
+    public RedirectView deletePost(@PathVariable Long id) {
+        repository.deleteById(id);
+        return new RedirectView("/posts");
+    }
+
     @PostMapping("/comments")
     public RedirectView postComment(@RequestParam Long postId, @RequestParam String content, @AuthenticationPrincipal DefaultOidcUser oidcUser){
         Optional<User> user = userRepository.findUserByUsername(oidcUser.getEmail());
