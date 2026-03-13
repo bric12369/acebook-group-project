@@ -34,6 +34,7 @@ public class UsersController {
                     User newUser = new User(username);
                     newUser.setDisplayName(username);
                     newUser.setEnabled(true);
+                    newUser.setProfileImageUrl("avatar_current_user.jpeg");
                     User savedUser = userRepository.save(newUser);
 
                     notificationRepository.save(new Notification(savedUser, "Welcome to Acebook!"));

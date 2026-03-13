@@ -1,7 +1,7 @@
 <div class="bg-neutral-50 rounded-md px-15 py-10 shadow-md flex flex-col md:flex-row items-center gap-5 px-5">
   <!-- Profile image -->
   <div class="w-25 h-25 bg-red-300 rounded-full">
-    <img src="https://i.pinimg.com/736x/d2/3e/f6/d23ef673fc4ec07e8e9c565071e2f2af.jpg" alt="Profile image" class="rounded-full"/>
+    <img th:src="@{'/images/' + ${user.profileImageUrl}}" alt="Profile image" class="rounded-full"/>
   </div>
 
   <!-- Details -->
