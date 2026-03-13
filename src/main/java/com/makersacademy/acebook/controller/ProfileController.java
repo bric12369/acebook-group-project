@@ -15,9 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ProfileController {
@@ -53,6 +51,9 @@ public class ProfileController {
                 .findByFollowerAndFollowing(currentUser, user)
                 .isPresent();
 
+        Set<Long> likedPosts = likeRepository.findPostIdsByUserId(currentUser.getId());
+
+        model.addAttribute("likedPosts", likedPosts);
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("isCurrentUser", isCurrentUser);

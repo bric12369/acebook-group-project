@@ -69,9 +69,12 @@ public class PostsController {
     }
 
     @GetMapping("/posts/{id}")
-    public String getPostById(Model model, @PathVariable Long id) {
+    public String getPostById(Model model, @PathVariable Long id, @AuthenticationPrincipal DefaultOidcUser oidcUser) {
         Optional<Post> post = repository.findById(id);
         Iterable<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtDesc(id);
+        Optional<User> currentUser = userRepository.findUserByUsername(oidcUser.getEmail());
+        Set<Long> likedPosts = likeRepository.findPostIdsByUserId(currentUser.get().getId());
+        model.addAttribute("likedPosts", likedPosts);
         model.addAttribute("post", post.get());
         model.addAttribute("comments", comments);
         return "posts/post";
