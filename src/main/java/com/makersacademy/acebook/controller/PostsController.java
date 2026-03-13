@@ -50,6 +50,8 @@ public class PostsController {
             String email = oidcUser.getEmail();
             Optional<User> currentUser = userRepository.findUserByUsername(email);
             currentUser.ifPresent(user -> model.addAttribute("currentUserId", user.getId()));
+            model.addAttribute("user", currentUser.get());
+            model.addAttribute("isCurrentUser", true);
         }
 
 
@@ -93,7 +95,7 @@ public class PostsController {
         comment.setUser(user.get());
         comment.setCreatedAt(LocalDateTime.now());
         commentRepository.save(comment);
-        return new RedirectView("/posts");
+        return new RedirectView("/posts/" + postId);
     }
 
     @PostMapping("/posts/{postId}/like")

@@ -56,7 +56,7 @@ public class ProfileController {
         model.addAttribute("followingCount", followingCount);
         model.addAttribute("isFollowing", isFollowing);
 
-        return "profile/userprofile";
+        return "profile/profile";
     }
 
     @GetMapping("/users/{id}/edit")
