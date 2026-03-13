@@ -94,7 +94,7 @@ public class PostsController {
         comment.setPostId(postId);
         comment.setUser(user.get());
         commentRepository.save(comment);
-        return new RedirectView("/posts");
+        return new RedirectView("/posts/" + postId);
     }
 
     @PostMapping("/posts/{postId}/like")

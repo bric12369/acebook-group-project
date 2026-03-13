@@ -1,0 +1,11 @@
+<div class="border-b py-2">
+  <!-- Commenter profile image -->
+  <img />
+
+  <!-- Comment details -->
+  <div>
+    <span th:text="${comment.content}"></span>
+    <span class="text-sm text-gray-500" th:text="'User: ' + ${comment.user.username}"></span>
+  </div>
+
+</div>
