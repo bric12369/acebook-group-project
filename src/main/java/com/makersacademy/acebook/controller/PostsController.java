@@ -52,6 +52,7 @@ public class PostsController {
             currentUser.ifPresent(user -> model.addAttribute("currentUserId", user.getId()));
             model.addAttribute("user", currentUser.get());
             model.addAttribute("isCurrentUser", true);
+
         }
 
 
