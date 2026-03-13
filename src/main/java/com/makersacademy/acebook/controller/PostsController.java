@@ -52,6 +52,8 @@ public class PostsController {
             String email = oidcUser.getEmail();
             Optional<User> currentUser = userRepository.findUserByUsername(email);
             currentUser.ifPresent(user -> model.addAttribute("currentUserId", user.getId()));
+            Set<Long> likedPosts = likeRepository.findPostIdsByUserId(currentUser.get().getId());
+            model.addAttribute("likedPosts", likedPosts);
             model.addAttribute("user", currentUser.get());
             model.addAttribute("isCurrentUser", true);
 
@@ -70,9 +72,17 @@ public class PostsController {
     }
 
     @GetMapping("/posts/{id}")
-    public String getPostById(Model model, @PathVariable Long id) {
+    public String getPostById(Model model, @PathVariable Long id, @AuthenticationPrincipal DefaultOidcUser oidcUser) {
         Optional<Post> post = repository.findById(id);
         Iterable<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtDesc(id);
+        Optional<User> currentUser = userRepository.findUserByUsername(oidcUser.getEmail());
+        Set<Long> likedPosts = likeRepository.findPostIdsByUserId(currentUser.get().getId());
+
+        Map<Long, Long> likeCounts = new HashMap<>();
+        likeCounts.put(id, likeRepository.countByPostId(id));
+
+        model.addAttribute("likeCounts", likeCounts);
+        model.addAttribute("likedPosts", likedPosts);
         model.addAttribute("post", post.get());
         model.addAttribute("comments", comments);
         return "posts/post";

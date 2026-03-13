@@ -3,6 +3,7 @@ import com.makersacademy.acebook.model.Follow;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.FollowRepository;
+import com.makersacademy.acebook.repository.LikeRepository;
 import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ProfileController {
@@ -28,6 +27,9 @@ public class ProfileController {
 
     @Autowired
     FollowRepository followRepository;
+
+    @Autowired
+    LikeRepository likeRepository;
 
     @GetMapping("/users/{id}")
     public String showProfile(@PathVariable Long id, Model model, @AuthenticationPrincipal DefaultOidcUser oidcUser) {
@@ -49,6 +51,16 @@ public class ProfileController {
                 .findByFollowerAndFollowing(currentUser, user)
                 .isPresent();
 
+        Set<Long> likedPosts = likeRepository.findPostIdsByUserId(currentUser.getId());
+
+        Map<Long, Long> likeCounts = new HashMap<>();
+
+        for (Post post : posts) {
+            likeCounts.put(post.getId(), likeRepository.countByPostId(post.getId()));
+        }
+
+        model.addAttribute("likeCounts", likeCounts);
+        model.addAttribute("likedPosts", likedPosts);
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("isCurrentUser", isCurrentUser);
