@@ -53,6 +53,13 @@ public class ProfileController {
 
         Set<Long> likedPosts = likeRepository.findPostIdsByUserId(currentUser.getId());
 
+        Map<Long, Long> likeCounts = new HashMap<>();
+
+        for (Post post : posts) {
+            likeCounts.put(post.getId(), likeRepository.countByPostId(post.getId()));
+        }
+
+        model.addAttribute("likeCounts", likeCounts);
         model.addAttribute("likedPosts", likedPosts);
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
