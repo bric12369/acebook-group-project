@@ -88,9 +88,9 @@ public class PostsController {
     }
 
     @DeleteMapping("/posts/{id}")
-    public RedirectView deletePost(@PathVariable Long id) {
+    public RedirectView deletePost(@PathVariable Long id, @RequestParam String redirect) {
         repository.deleteById(id);
-        return new RedirectView("/posts");
+        return new RedirectView(redirect);
     }
 
     @PostMapping("/comments")

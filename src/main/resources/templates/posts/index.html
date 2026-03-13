@@ -44,7 +44,7 @@
 
                 <!-- Post feed -->
                 <div th:each="post: ${posts}" >
-                    <th:block th:insert="fragments/post.html"></th:block>
+                    <th:block th:insert="fragments/post.html :: postFragment(${post}, '/posts')"></th:block>
                 </div>
             </div>
         </main>

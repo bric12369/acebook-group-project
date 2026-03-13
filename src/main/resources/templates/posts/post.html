@@ -25,7 +25,7 @@
     <div class="xl:w-225 lg:w-175 md:w-125 w-full flex flex-col gap-5">
 
         <!-- Post -->
-        <th:block th:insert="fragments/post.html"></th:block>
+        <th:block th:insert="fragments/post.html :: postFragment(${post}, '/posts')"></th:block>
 
         <!-- Comment form -->
 

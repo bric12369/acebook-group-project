@@ -24,9 +24,8 @@
         <th:block th:insert="fragments/profile"></th:block>
         <!-- Posts Section -->
         <div th:each="post : ${posts}">
-            <th:block th:insert="fragments/post.html"></th:block>
+            <th:block th:insert="fragments/post.html :: postFragment(${post}, @{/users/{id}(id=${currentUserId})})"></th:block>
         </div>
-
         <!-- If no posts -->
         <div th:if="${#lists.isEmpty(posts)}" class="text-center py-12">
             <h2 class="text-neutral-600">This user has no posts</h2>
