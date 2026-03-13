@@ -22,22 +22,25 @@
   <div>
     <!-- Like button -->
     <label class="appearance-none select-none relative px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300 cursor-pointer duration-300">
-      <input th:if="${likedPosts.contains(post.id)}" checked type="checkbox" th:onclick="|likePost(${post.id})|" class="sr-only peer">
-      <input th:unless="${likedPosts.contains(post.id)}" type="checkbox" th:onclick="|likePost(${post.id})|" class="sr-only peer">
+      <input type="checkbox" th:onclick="|likePost(${post.id})|" class="sr-only peer">
       <i class="z--1 fa-regular fa-heart"></i>
-      <span class="absolute px-3 z-0 left-0 opacity-0 peer-checked:opacity-100 duration-200">
+      <span class="absolute px-3 z-0 left-0 opacity-0 peer-checked:opacity-100 duration-200 self-center">
         <i class="z-0 fa-solid fa-heart text-red-400"></i>
       </span>
       <span class="relative z-2"> Like (<span th:text="${likeCounts.get(post.id)}"></span>)</span>
-    </label>
+   </label>
 
-    <a th:href="@{'/posts/' + ${post.id}}" class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300"><i class="fa-regular fa-comment"></i> Comments (<span>3</span>)</a>
-    <form th:action="@{/posts/{id}(id=${post.id}, redirect=${redirect})}" method="post" style="display:inline;">
-      <input type="hidden" name="_method" value="delete">
-      <button type="submit"
-              class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300">
-        <i class="fa fa-trash"></i> Delete
-      </button>
-    </form>
-  </div>
+<!-- Comments -->
+<a th:href="@{'/posts/' + ${post.id}}" class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300">
+  <i class="fa-regular fa-comment"></i> Comments (<span th:text="${commentCounts.get(post.id)}"></span>)
+</a>
+
+<form th:action="@{/posts/{id}(id=${post.id}, redirect=${redirect})}" method="post" style="display:inline;">
+  <input type="hidden" name="_method" value="delete">
+  <button type="submit"
+          class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300">
+    <i class="fa fa-trash"></i> Delete
+  </button>
+</form>
+</div>
 </div>

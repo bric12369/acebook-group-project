@@ -2,10 +2,7 @@ package com.makersacademy.acebook.controller;
 import com.makersacademy.acebook.model.Follow;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
-import com.makersacademy.acebook.repository.FollowRepository;
-import com.makersacademy.acebook.repository.LikeRepository;
-import com.makersacademy.acebook.repository.PostRepository;
-import com.makersacademy.acebook.repository.UserRepository;
+import com.makersacademy.acebook.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +28,9 @@ public class ProfileController {
     @Autowired
     LikeRepository likeRepository;
 
+    @Autowired
+    CommentRepository commentRepository;
+
     @GetMapping("/users/{id}")
     public String showProfile(@PathVariable Long id, Model model, @AuthenticationPrincipal DefaultOidcUser oidcUser) {
         User user = userRepository.findById(id)
@@ -51,16 +51,16 @@ public class ProfileController {
                 .findByFollowerAndFollowing(currentUser, user)
                 .isPresent();
 
-        Set<Long> likedPosts = likeRepository.findPostIdsByUserId(currentUser.getId());
-
         Map<Long, Long> likeCounts = new HashMap<>();
+        Map<Long, Long>  commentCounts = new HashMap<>();
 
         for (Post post : posts) {
             likeCounts.put(post.getId(), likeRepository.countByPostId(post.getId()));
+            commentCounts.put(post.getId(), commentRepository.countByPostId(post.getId()));
         }
 
         model.addAttribute("likeCounts", likeCounts);
-        model.addAttribute("likedPosts", likedPosts);
+        model.addAttribute("commentCounts", commentCounts);
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("isCurrentUser", isCurrentUser);

@@ -1,11 +1,9 @@
-<div class="border-b py-2">
+<div class="border-b border-neutral-200 py-2 my-3">
   <!-- Commenter profile image -->
-  <img />
+   <img th:src="@{'/images/' + ${comment.user.profileImageUrl}}" class="w-5 h-5 rounded-full inline"/>
 
   <!-- Comment details -->
-  <div>
-    <span th:text="${comment.content}"></span>
-    <span class="text-sm text-gray-500" th:text="'User: ' + ${comment.user.username}"></span>
-  </div>
+  <span class="text-sm text-gray-500 border-r border-neutral-200 pr-2 mr-2" th:text="${comment.user.username}"></span>
+  <span th:text="${comment.content}"></span>
 
 </div>

@@ -10,12 +10,6 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 @RestController
 public class UsersController {
     @Autowired
@@ -53,21 +47,4 @@ public class UsersController {
 
         return new RedirectView("/posts");
     }
-    @GetMapping("/users/search")
-    public List<Map<String, Object>> searchUsers(@RequestParam String q) {
-
-        List<User> users = userRepository.findByUsernameContainingIgnoreCase(q);
-
-        List<Map<String, Object>> results = new ArrayList<>();
-
-        for (User user : users) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", user.getId());
-            map.put("username", user.getUsername());
-            results.add(map);
-        }
-
-        return results;
-    }
-
 }
