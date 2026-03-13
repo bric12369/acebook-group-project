@@ -1,75 +1,60 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="${user.username} + ' | Acebook'">User Profile</title>
+<div class="bg-neutral-50 rounded-md px-15 py-10 shadow-md flex flex-col md:flex-row items-center gap-5 px-5">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen">
+    <!-- Profile image -->
+    <div class="w-25 h-25 bg-red-300 rounded-full">
+        <img src="https://i.pinimg.com/736x/d2/3e/f6/d23ef673fc4ec07e8e9c565071e2f2af.jpg"
+             alt="Profile image"
+             class="rounded-full"/>
+    </div>
 
-<main class="max-w-[600px] mx-auto px-4 py-8">
+    <!-- Details -->
+    <div class="flex flex-col gap-3">
 
-    <!-- Profile Header -->
-    <div class="profile-header bg-white rounded shadow p-4 flex items-center space-x-4">
-        <div>
-            <!-- Username -->
-            <h2 class="text-xl font-bold" th:text="${user.displayName}">DisplayName</h2>
+        <!-- Username -->
+        <h2 class="text-2xl" th:text="${user.displayName}">Username</h2>
 
-            <p class="text-gray-600 mt-2" th:if="${user.bio}" th:text="${user.bio}"></p>
+        <!-- Bio -->
+        <p class="text-neutral-600" th:if="${user.bio}" th:text="${user.bio}"></p>
 
-            <div class="text-neutral-600 text-md flex gap-3">
-                <div>
+        <!-- Follower counts -->
+        <div class="text-neutral-600 text-md flex gap-3">
+            <div>
         <span class="text-black font-bold text-lg"
               th:text="${followersCount}">0</span> Followers
-                </div>
-                <div>
+            </div>
+            <div>
         <span class="text-black font-bold text-lg"
               th:text="${followingCount}">0</span> Following
-                </div>
-            </div>
-            <div th:if="${!isCurrentUser}">
-
-                <form th:if="${!isFollowing}"
-                      th:action="@{/users/{id}/follow(id=${user.id})}"
-                      method="post">
-                    <button class="bg-blue-500 text-white px-4 py-2 rounded">
-                        Follow
-                    </button>
-                </form>
-
-                <form th:if="${isFollowing}"
-                      th:action="@{/users/{id}/unfollow(id=${user.id})}"
-                      method="post">
-                    <button class="bg-gray-400 text-white px-4 py-2 rounded">
-                        Unfollow
-                    </button>
-                </form>
-
-            </div>
-            <!-- Edit / View Button -->
-            <div class="mt-2">
-                <a th:if="${isCurrentUser}"
-                   th:href="@{/users/{id}/edit(id=${user.id})}"
-                   class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
-                    Edit Profile
-                </a>
             </div>
         </div>
+
+        <!-- Follow / Unfollow -->
+        <div th:if="${!isCurrentUser}">
+
+            <form th:if="${!isFollowing}"
+                  th:action="@{/users/{id}/follow(id=${user.id})}"
+                  method="post">
+                <button class="border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300 w-fit px-3 py-2">
+                    Follow
+                </button>
+            </form>
+
+            <form th:if="${isFollowing}"
+                  th:action="@{/users/{id}/unfollow(id=${user.id})}"
+                  method="post">
+                <button class="border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300 w-fit px-3 py-2">
+                    Unfollow
+                </button>
+            </form>
+
+        </div>
+
+        <!-- Edit Profile -->
+        <a th:if="${isCurrentUser}"
+           th:href="@{/users/{id}/edit(id=${user.id})}"
+           class="border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300 w-fit px-3 py-2">
+            Edit Profile
+        </a>
+
     </div>
-
-    <!-- Posts Section -->
-    <div class="posts mt-6">
-        <div th:each="post : ${posts}" class="post-card bg-white rounded shadow p-4 mb-4">
-            <p th:text="${post.content}">Post content</p>
-        </div>
-
-        <!-- If no posts -->
-        <div th:if="${#lists.isEmpty(posts)}" class="text-center text-gray-500 py-12">
-            No posts yet
-        </div>
-    </div>
-
-</main>
-</body>
-</html>
+</div>
