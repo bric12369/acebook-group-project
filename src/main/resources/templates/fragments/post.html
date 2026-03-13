@@ -30,6 +30,12 @@
     </label>
 
     <a href="/" class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300"><i class="fa-regular fa-comment"></i> Comments (<span>3</span>)</a>
-    <a href="/" class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300"><i class="fa fa-trash"></i> Delete</a>
+    <form th:action="@{'/posts/' + ${post.id}}" method="post" style="display:inline;">
+      <input type="hidden" name="_method" value="delete">
+      <button type="submit"
+              class="px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300">
+        <i class="fa fa-trash"></i> Delete
+      </button>
+    </form>
   </div>
 </div>
