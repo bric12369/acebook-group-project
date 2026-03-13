@@ -10,10 +10,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="/like_post.js"></script>
     </head>
-    <body>
 
     <body class="min-h-screen flex flex-col bg-neutral-100">
-    
+
         <!-- Navbar -->
         <th:block th:insert="fragments/navbar.html"></th:block>
 
@@ -23,52 +22,8 @@
             <!-- Wrapper div for responsive sizing -->
             <div class="xl:w-225 lg:w-175 md:w-125 w-full flex flex-col gap-5">
 
-    <ul>
-        <li th:each="post : ${posts}">
-            <a th:href="'/posts/' + ${post.getId()}"><span th:text="${post.content}"></span></a>
-            <a th:href="@{/users/{id}(id=${post.user.id})}"
-               class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
-                View Profile
-            </a>
-
-            <form th:action="@{/comments}" method="post">
-                <input type="hidden" name="postId" th:value="${post.id}" />
-
-                <input type="submit" value="Like" />
-
-                <p>
-                    Comment:
-                    <input type="text" name="content" />
-                    <input type="submit" value="Add Comment"/>
-                </p>
-            </form>
-        </li>
-    </ul>
                 <!-- Current user -->
-                <div class="bg-neutral-50 rounded-md px-15 py-10 shadow-md flex flex-col md:flex-row items-center gap-5 px-5">
-                    <!-- Profile image -->
-                    <div class="w-25 h-25 bg-red-300 rounded-full">
-                        <img src="https://i.pinimg.com/736x/d2/3e/f6/d23ef673fc4ec07e8e9c565071e2f2af.jpg" alt="Profile image" class="rounded-full"/>
-                    </div>
-
-                    <!-- Details -->
-                    <div class="flex flex-col gap-3">
-                        <h2 class="text-2xl">Current User</h2>
-
-                        <!-- Follower counts -->
-                        <div class="text-neutral-600 text-md flex gap-3">
-                            <div>
-                                <span id="followers" class="text-black font-bold text-lg">X</span> Followers
-                            </div>
-                            <div>
-                                <span id="following" class="text-black font-bold text-lg">Y</span> Following
-                            </div>
-
-                        </div>
-
-                        <a class="border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300 w-fit px-3 py-2">Edit Profile</a>
-                    </div>
-                </div>
+                <th:block th:insert="fragments/profile.html"></th:block>
 
                 <!-- New post form -->
                 <form action="#" th:action="@{/posts}" th:object="${post}" method="post" class="bg-neutral-50 rounded-md px-5 py-5 shadow-md">

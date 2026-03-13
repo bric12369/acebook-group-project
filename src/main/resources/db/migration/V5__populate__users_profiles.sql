@@ -7,6 +7,10 @@ INSERT INTO users (username, enabled)
 SELECT 'bob', true
     WHERE NOT EXISTS (SELECT 1 FROM users WHERE username='bob');
 
+INSERT INTO users (username, enabled)
+SELECT 'baz', true
+    WHERE NOT EXISTS (SELECT 1 FROM users WHERE username='baz');
+
 -- Insert posts dynamically using the actual user IDs
 INSERT INTO posts (content, user_id)
 SELECT 'Hello world!', id FROM users WHERE username='alice'

@@ -1,12 +1,12 @@
 <div class="bg-neutral-50 rounded-md px-15 py-10 shadow-md flex flex-col md:flex-row items-center gap-5 px-5">
   <!-- Profile image -->
   <div class="w-25 h-25 bg-red-300 rounded-full">
-    <img src="https://i.pinimg.com/736x/d2/3e/f6/d23ef673fc4ec07e8e9c565071e2f2af.jpg" alt="Profile image" class="rounded-full"/>
+    <img th:src="@{'/images/' + ${user.profileImageUrl}}" alt="Profile image" class="rounded-full"/>
   </div>
 
   <!-- Details -->
   <div class="flex flex-col gap-3">
-    <h2 class="text-2xl">Current User</h2>
+    <h2 class="text-2xl" th:text="${user.username}"></h2>
 
     <!-- Follower counts -->
     <div class="text-neutral-600 text-md flex gap-3">

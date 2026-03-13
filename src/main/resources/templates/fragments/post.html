@@ -3,8 +3,8 @@
   <div class="flex justify-between">
     <!-- Author details -->
     <div class="flex items-center gap-3">
-      <img src="https://i.pinimg.com/736x/d2/3e/f6/d23ef673fc4ec07e8e9c565071e2f2af.jpg" class="w-10 h-10 rounded-full"/>
-      <a th:href="@{'/users/' + ${post.id}}" class="font-bold text-lg">Eren Yeager</a>
+      <img th:src="@{'/images/' + ${post.user.profileImageUrl}}" class="w-10 h-10 rounded-full"/>
+      <a th:href="@{'/users/' + ${post.user.id}}" th:text="${post.user.username}" class="font-bold text-lg"></a>
     </div>
 
     <!-- Timestamp -->
@@ -14,7 +14,8 @@
   <!-- Post content -->
   <div class="text-pretty" th:text="${post.content}"></div>
 
-
+<!--  Post image -->
+  <img th:src="${post.image}">
 
   <!-- Post interactions -->
   <div>

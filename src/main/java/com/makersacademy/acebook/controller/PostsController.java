@@ -52,6 +52,8 @@ public class PostsController {
             currentUser.ifPresent(user -> model.addAttribute("currentUserId", user.getId()));
             Set<Long> likedPosts = likeRepository.findPostIdsByUserId(currentUser.get().getId());
             model.addAttribute("likedPosts", likedPosts);
+            model.addAttribute("user", currentUser.get());
+            model.addAttribute("isCurrentUser", true);
         }
 
 
@@ -61,9 +63,6 @@ public class PostsController {
             likeCounts.put(post.getId(), likeRepository.countByPostId(post.getId()));
         }
 
-
-
-
         model.addAttribute("likeCounts", likeCounts);
 
         return "posts/index";
@@ -72,7 +71,7 @@ public class PostsController {
     @GetMapping("/posts/{id}")
     public String getPostById(Model model, @PathVariable Long id) {
         Optional<Post> post = repository.findById(id);
-        Iterable<Comment> comments = commentRepository.getCommentsByPostId(id);
+        Iterable<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtDesc(id);
         model.addAttribute("post", post.get());
         model.addAttribute("comments", comments);
         return "posts/post";
@@ -83,8 +82,8 @@ public class PostsController {
         post.setCreatedAt(LocalDateTime.now());
 
         Optional<User> user = userRepository.findUserByUsername(oidcUser.getEmail());
-        post.setUser(user.get());
 
+        post.setUser(user.get());
         repository.save(post);
         return new RedirectView("/posts");
     }
@@ -96,8 +95,9 @@ public class PostsController {
         comment.setContent(content);
         comment.setPostId(postId);
         comment.setUser(user.get());
+        comment.setCreatedAt(LocalDateTime.now());
         commentRepository.save(comment);
-        return new RedirectView("/posts");
+        return new RedirectView("/posts/" + postId);
     }
 
     @PostMapping("/posts/{postId}/like")
