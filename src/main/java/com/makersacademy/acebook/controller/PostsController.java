@@ -57,12 +57,15 @@ public class PostsController {
 
 
         Map<Long, Long> likeCounts = new HashMap<>();
+        Map<Long, Long>  commentCounts = new HashMap<>();
 
         for (Post post : posts) {
             likeCounts.put(post.getId(), likeRepository.countByPostId(post.getId()));
+            commentCounts.put(post.getId(), commentRepository.countByPostId(post.getId()));
         }
 
         model.addAttribute("likeCounts", likeCounts);
+        model.addAttribute("commentCounts", commentCounts);
 
         return "posts/index";
     }
@@ -71,6 +74,20 @@ public class PostsController {
     public String getPostById(Model model, @PathVariable Long id) {
         Optional<Post> post = repository.findById(id);
         Iterable<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtDesc(id);
+
+        Map<Long, Long> likeCounts = new HashMap<>();
+        Map<Long, Long>  commentCounts = new HashMap<>();
+
+
+
+        likeCounts.put(post.get().getId(), likeRepository.countByPostId(post.get().getId()));
+        commentCounts.put(post.get().getId(), commentRepository.countByPostId(post.get().getId()));
+
+
+
+        model.addAttribute("likeCounts", likeCounts);
+        model.addAttribute("commentCounts", commentCounts);
+
         model.addAttribute("post", post.get());
         model.addAttribute("comments", comments);
         return "posts/post";

@@ -2,9 +2,7 @@ package com.makersacademy.acebook.controller;
 import com.makersacademy.acebook.model.Follow;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
-import com.makersacademy.acebook.repository.FollowRepository;
-import com.makersacademy.acebook.repository.PostRepository;
-import com.makersacademy.acebook.repository.UserRepository;
+import com.makersacademy.acebook.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,9 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ProfileController {
@@ -28,6 +24,12 @@ public class ProfileController {
 
     @Autowired
     FollowRepository followRepository;
+
+    @Autowired
+    LikeRepository likeRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
 
     @GetMapping("/users/{id}")
     public String showProfile(@PathVariable Long id, Model model, @AuthenticationPrincipal DefaultOidcUser oidcUser) {
@@ -49,6 +51,16 @@ public class ProfileController {
                 .findByFollowerAndFollowing(currentUser, user)
                 .isPresent();
 
+        Map<Long, Long> likeCounts = new HashMap<>();
+        Map<Long, Long>  commentCounts = new HashMap<>();
+
+        for (Post post : posts) {
+            likeCounts.put(post.getId(), likeRepository.countByPostId(post.getId()));
+            commentCounts.put(post.getId(), commentRepository.countByPostId(post.getId()));
+        }
+
+        model.addAttribute("likeCounts", likeCounts);
+        model.addAttribute("commentCounts", commentCounts);
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("isCurrentUser", isCurrentUser);

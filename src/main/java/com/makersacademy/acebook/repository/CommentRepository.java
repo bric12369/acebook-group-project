@@ -8,4 +8,6 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
     Iterable<Comment> findByPostIdOrderByCreatedAtDesc(Long postId);
 
     Iterable<Comment> getCommentsByUserId(Long userId);
+
+    long countByPostId(long postId);
 }

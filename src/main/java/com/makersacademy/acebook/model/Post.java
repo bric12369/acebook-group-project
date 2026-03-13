@@ -1,6 +1,8 @@
 package com.makersacademy.acebook.model;
 
 import java.time.LocalDateTime;
+
+import com.makersacademy.acebook.repository.CommentRepository;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
