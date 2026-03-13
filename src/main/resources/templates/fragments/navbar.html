@@ -51,27 +51,20 @@
 <script>
   const allNotifications = Array.from(document.querySelectorAll('.notification-item'));
   const badge = document.getElementById('notificationBadge');
-  let index = 0;
 
-  function showNextNotification() {
-    if (index >= allNotifications.length) {
-      badge.classList.add('hidden'); // hide badge when done
-      return;
-    }
-    allNotifications[index].classList.remove('hidden'); // show notification
-    badge.textContent = index + 1; // increment badge
-    index++;
-    setTimeout(showNextNotification, Math.random() * 4000 + 1000); // random delay 1–5s
-  }
+  allNotifications.forEach(item => item.classList.remove('hidden'));
 
-  showNextNotification();
+  badge.textContent = allNotifications.length;
 
   function toggleNotifications() {
     const dropdown = document.getElementById("notificationDropdown");
+    const isHidden = dropdown.classList.contains("hidden");
     dropdown.classList.toggle("hidden");
-  }
 
-  // Close dropdown if clicked outside
+    if (isHidden) {
+      badge.classList.add('hidden');
+    }
+  }
   document.addEventListener("click", function(event) {
     const dropdown = document.getElementById("notificationDropdown");
     const button = event.target.closest("button");
