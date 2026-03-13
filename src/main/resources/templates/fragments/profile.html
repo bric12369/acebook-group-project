@@ -5,6 +5,7 @@
     <img src="https://i.pinimg.com/736x/d2/3e/f6/d23ef673fc4ec07e8e9c565071e2f2af.jpg"
          alt="Profile image"
          class="rounded-full"/>
+    <img th:src="@{'/images/' + ${user.profileImageUrl}}" alt="Profile image" class="rounded-full"/>
   </div>
 
   <!-- Details -->
@@ -24,6 +25,7 @@
       <div>
         <span class="text-black font-bold text-lg" th:text="${followingCount}">0</span> Following
       </div>
+
     </div>
 
     <!-- Edit Profile Button (current user only) -->

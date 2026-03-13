@@ -15,6 +15,7 @@ public class User {
 
     private String username;
     private String displayName;
+    private String profileImageUrl;
 
     private String bio;
 
@@ -33,11 +34,11 @@ public class User {
         this.bio = bio;
     }
 
-    public User(String username, boolean enabled, String bio, String displayName) {
+    public User(String username, boolean enabled, String bio, String displayName, String profileImageUrl) {
         this.username = username;
         this.enabled = enabled;
-        this.displayName = username;
+        this.displayName = displayName;
         this.bio = bio;
-
+        this.profileImageUrl = profileImageUrl;
     }
 }
