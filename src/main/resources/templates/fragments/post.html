@@ -9,7 +9,7 @@
     </div>
 
     <!-- Timestamp -->
-    <div class="text-neutral-600 text-lg">2000 Years Ago</div>
+    <div th:text="${#temporals.format(post.createdAt, 'dd/MM/yyyy HH:mm')}" class="text-neutral-600 text-lg"></div>
   </div>
 
   <!-- Post content -->
