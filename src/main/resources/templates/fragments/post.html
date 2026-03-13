@@ -20,7 +20,8 @@
   <div>
     <!-- Like button -->
     <label class="appearance-none select-none relative px-3 py-2 border border-neutral-200 rounded-md hover:bg-neutral-200 duration-300 cursor-pointer duration-300">
-      <input type="checkbox" th:onclick="|likePost(${post.id})|" class="sr-only peer">
+      <input th:if="${likedPosts.contains(post.id)}" checked type="checkbox" th:onclick="|likePost(${post.id})|" class="sr-only peer">
+      <input th:unless="${likedPosts.contains(post.id)}" type="checkbox" th:onclick="|likePost(${post.id})|" class="sr-only peer">
       <i class="z--1 fa-regular fa-heart"></i>
       <span class="absolute px-3 z-0 left-0 opacity-0 peer-checked:opacity-100 duration-200">
         <i class="z-0 fa-solid fa-heart text-red-400"></i>

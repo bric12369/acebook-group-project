@@ -50,6 +50,8 @@ public class PostsController {
             String email = oidcUser.getEmail();
             Optional<User> currentUser = userRepository.findUserByUsername(email);
             currentUser.ifPresent(user -> model.addAttribute("currentUserId", user.getId()));
+            Set<Long> likedPosts = likeRepository.findPostIdsByUserId(currentUser.get().getId());
+            model.addAttribute("likedPosts", likedPosts);
         }
 
 
@@ -58,6 +60,9 @@ public class PostsController {
         for (Post post : posts) {
             likeCounts.put(post.getId(), likeRepository.countByPostId(post.getId()));
         }
+
+
+
 
         model.addAttribute("likeCounts", likeCounts);
 
@@ -78,8 +83,8 @@ public class PostsController {
         post.setCreatedAt(LocalDateTime.now());
 
         Optional<User> user = userRepository.findUserByUsername(oidcUser.getEmail());
-
         post.setUser(user.get());
+
         repository.save(post);
         return new RedirectView("/posts");
     }
