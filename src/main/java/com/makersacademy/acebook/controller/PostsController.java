@@ -46,13 +46,22 @@ public class PostsController {
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
 
+        Set<Long> likedPostIds = new HashSet<>();
+
         if(oidcUser != null) {
             String email = oidcUser.getEmail();
             Optional<User> currentUser = userRepository.findUserByUsername(email);
-            currentUser.ifPresent(user -> model.addAttribute("currentUserId", user.getId()));
+            // Populates likedPostIds
+            currentUser.ifPresent(user -> {
+                model.addAttribute("currentUserId", user.getId());
+                for (Post post : posts) {
+                    if (likeRepository.existsByPostIdAndUserId(post.getId(), user.getId())) {
+                        likedPostIds.add(post.getId());
+                    }
+                }
+            });
             model.addAttribute("user", currentUser.get());
             model.addAttribute("isCurrentUser", true);
-
         }
 
 
@@ -66,27 +75,34 @@ public class PostsController {
 
         model.addAttribute("likeCounts", likeCounts);
         model.addAttribute("commentCounts", commentCounts);
+        model.addAttribute("likedPostIds", likedPostIds);
 
         return "posts/index";
     }
 
     @GetMapping("/posts/{id}")
-    public String getPostById(Model model, @PathVariable Long id) {
+    public String getPostById(Model model, @PathVariable Long id,
+                              @AuthenticationPrincipal DefaultOidcUser oidcUser) {
         Optional<Post> post = repository.findById(id);
         Iterable<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtDesc(id);
 
         Map<Long, Long> likeCounts = new HashMap<>();
         Map<Long, Long>  commentCounts = new HashMap<>();
-
-
+        Set<Long> likedPostIds = new HashSet<>();
 
         likeCounts.put(post.get().getId(), likeRepository.countByPostId(post.get().getId()));
         commentCounts.put(post.get().getId(), commentRepository.countByPostId(post.get().getId()));
 
-
+        if (oidcUser != null) {
+            Optional<User> user = userRepository.findUserByUsername(oidcUser.getEmail());
+            if (user.isPresent() && likeRepository.existsByPostIdAndUserId(id, user.get().getId())) {
+                likedPostIds.add(id);
+            }
+        }
 
         model.addAttribute("likeCounts", likeCounts);
         model.addAttribute("commentCounts", commentCounts);
+        model.addAttribute("likedPostIds", likedPostIds);
 
         model.addAttribute("post", post.get());
         model.addAttribute("comments", comments);
@@ -123,8 +139,9 @@ public class PostsController {
     }
 
     @PostMapping("/posts/{postId}/like")
-    public RedirectView toggleLike(@PathVariable Long postId,
-                                   @AuthenticationPrincipal DefaultOidcUser oidcUser) {
+    @ResponseBody
+    public Map<String, Long> toggleLike(@PathVariable Long postId,
+                                        @AuthenticationPrincipal DefaultOidcUser oidcUser) {
 
         Optional<User> user = userRepository.findUserByUsername(oidcUser.getEmail());
         Long userId = user.get().getId();
@@ -138,6 +155,7 @@ public class PostsController {
             likeRepository.save(like);
         }
 
-        return new RedirectView("/posts");
+        long likeCount = likeRepository.countByPostId(postId);
+        return Map.of("likeCount", likeCount);
     }
 }
